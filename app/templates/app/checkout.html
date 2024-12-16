@@ -1,0 +1,304 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content_checkout %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    .btn-outline-dark  {
+        border: 2px solid red;
+        padding: 10px 20px;
+        color: red;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-outline-dark:hover {
+        background-color: red;
+        color: white;
+    }
+    #btnDatHang{
+        border: 2px solid red;
+        padding: 10px 20px;
+        color: red;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        background-color:white;
+    }
+    #btnDatHang:hover{
+        border: 2px solid black;
+        background-color: red;
+        color:white;
+    }
+    /* Tạo lớp overlay */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+  /* Căn giữa thông báo */
+    .centered-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+     .checkmark-icon {
+        color: green;
+        font-size: 50px;
+        margin: 0 auto;
+        display: block;
+     }
+
+      /* Nút OK */
+      .btn-ok {
+        float: right;
+        background-color: green;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        font-size: 15px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+     }
+
+     .btn-ok:hover {
+        background-color: #218838;
+     }
+     .payment-method {
+        margin-top: 20px;
+     }
+
+     .payment-method h4 {
+        margin-bottom: 10px;
+     }
+
+     .form-group {
+        margin-bottom: 15px;
+     }
+
+     .form-group label {
+        display: block;
+        font-weight: bold;
+     }
+
+     .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+     }
+
+      /* CSS cho nút "Thanh toán bằng thẻ ngân hàng" */
+     #pay-with-card-btn {
+        border: 2px solid red;
+        color: red;
+        text-decoration: none;
+        border-radius: 5px;
+        background-color: white;
+        transition: background-color 0.3s ease, color 0.3s ease;
+     }
+     #pay-with-card-btn:hover {
+        border: 2px solid black;
+        background-color: red;
+        color:white;
+     }
+     .confirmation-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 300px;
+            text-align: center;
+     }
+        /* Thiết lập kiểu CSS cho nút trong hộp thoại */
+     .confirmation-box button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+     }
+        /* Màu cho nút Hủy */
+     #cancelButton {
+            background-color: #e74c3c;
+            color: #fff;
+     }
+        /* Màu cho nút Đồng ý */
+     #confirmButton {
+            background-color: #2ecc71;
+            color: #fff;
+     }
+        /* Hover effect */
+     .confirmation-box button:hover {
+            opacity: 0.9;
+     }
+</style>
+<main role="main">
+     <div class="row" style='width:100%'>
+		<div class="col-lg-6">
+			<div class="box-element" id="form-wrapper">
+				<form id="form">
+					<div id="user-info">
+						<div class="form-field">
+                            <label for="kh_ten">Họ tên</label>
+							<input required class="form-control" type="text" name="name" placeholder="Tên..">
+						</div>
+						<div class="form-field">
+                            <label for="kh_ten">Họ tên</label>
+							<input required class="form-control" type="email" name="email" placeholder="Email..">
+						</div>
+					</div>
+					
+					<div id="shipping-info">
+						<hr>
+						<p>Thông tin vận chuyển:</p>
+						<hr>
+						<div class="form-field">
+                            <label for="kh_ten">Họ tên</label>
+							<input required class="form-control" type="text" name="address" placeholder="Tên đường, Tòa nhà, Số nhà..">
+						</div>
+						<div class="form-field">
+                            <label for="kh_ten">Tỉnh/thành phố/huyện </label>
+							<input required class="form-control" type="text" name="city" placeholder="Tỉnh/Thành phố/Huyện..">
+						</div>
+						
+						<div class="form-field">
+                            <label for="kh_ten"> Số điện thoại </label>
+							<input required class="form-control" type="text" name="phone" placeholder="Số điện thoại..">
+						</div>
+					</div>
+					<h4 class="mb-3">Hình thức thanh toán</h4>
+                    <div class="d-block my-3">
+                        <div class="custom-control custom-radio">
+                            <input id="httt-1" name="httt_ma" type="radio" class="custom-control-input" required=""
+                                   value="1">
+                            <label class="custom-control-label" for="httt-1">Thanh toán khi nhận hàng</label>
+                        </div>
+
+                        {% comment %} <div class="custom-control custom-radio">
+                            <input id="httt-2" name="httt_ma" type="radio" class="custom-control-input" required=""
+                                   value="2">
+                            <label class="custom-control-label" for="httt-2">Thanh toán bằng thẻ ngân hàng VnPay</label>
+                        </div> {% endcomment %}
+                    </div>
+
+					<hr>
+					<input id="btnDatHang" name="btnDatHang" class="btn btn-success btn-block"  type="submit" value="Đặt hàng">
+				</form>
+			</div>
+
+			<br>
+			<div class="box-element hidden" id="payment-info">
+				<small>Tùy chọn Paypal</small>
+			</div>
+			
+		</div>
+
+		<div class="col-lg-6">
+			<div class="box-element">
+				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">Trở về đơn hàng</a>
+				<hr>
+				<h3>Tổng quan đơn hàng</h3>
+				<hr>
+				{% for item in items %}
+				<div class="cart-row">
+					<div style="flex:2"><img class="row-image" src="{{item.product.ImageURL}}"></div>
+					<div style="flex:2"><p>{{item.product.name}}</p></div>
+					<div style="flex:1"><p>{{item.product.price}}00đ</p></div>
+					<div style="flex:1"><p>{{item.quantity}}</p></div>
+				</div>
+				{% endfor %}
+				<h5>Số lượng:  {{order.get_cart_items}} </h5>
+				<h5>Tổng tiền:  {{order.get_cart_total}}00đ</h5>
+			</div>
+		</div>
+	</div>
+</main>
+<div class="confirmation-box" style="display: none;">
+    <p>Bạn có muốn đặt hàng không?</p>
+    <!-- Nút Hủy -->
+    <button id="cancelButton">Hủy</button>
+    <!-- Nút Đồng ý -->
+    <button id="confirmButton">Đồng ý</button>
+</div>
+<div class="overlay">
+    <div class="centered-container">
+        <i class="fas fa-check-circle checkmark-icon"></i>
+        <p class="success-message">Đơn hàng đã được đặt thành công.</p>
+        <button class="btn btn-ok" onclick="hideSuccessMessage()" ><a href ="{% url 'home' %}">    OK</a></button>
+    </div>
+</div>
+
+<script>
+    document.getElementById("btnDatHang").addEventListener("click", function(event) {
+        event.preventDefault(); // Ngăn chặn gửi form mặc định
+
+        // Kiểm tra các trường thông tin nhận hàng
+        var name = document.querySelector('input[name="name"]').value;
+        var address = document.querySelector('input[name="address"]').value;
+        var phone = document.querySelector('input[name="phone"]').value;
+        var email = document.querySelector('input[name="email"]').value;
+        var city = document.querySelector('input[name="city"]').value;
+
+        // Nếu các trường thông tin đã được nhập, hiển thị thông báo
+        if (name && address && phone && email && city) {
+            // Hiển thị hộp thoại xác nhận
+            var confirmationBox = document.querySelector('.confirmation-box');
+            confirmationBox.style.display = "block";
+        } else {
+            // Nếu các trường thông tin chưa được nhập, hiển thị thông báo
+            alert("Vui lòng nhập đầy đủ thông tin nhận hàng trước khi đặt hàng.");
+        }
+    });
+
+    // Hàm đóng hộp thoại
+    function closeConfirmationBox() {
+        var confirmationBox = document.querySelector(".confirmation-box");
+        confirmationBox.style.display = "none";
+    }
+
+    // Hàm xử lý việc đồng ý đặt hàng
+    function handleOrderConfirmation() {
+        // Đóng hộp thoại xác nhận
+        closeConfirmationBox();
+        // Hiển thị thông báo đặt hàng thành công
+        showSuccessMessage();
+    }
+
+    // Hàm hiển thị thông báo đặt hàng thành công
+    function showSuccessMessage() {
+        var overlay = document.querySelector(".overlay");
+        overlay.style.display = "flex";
+    }
+
+    // Hàm ẩn thông báo đặt hàng thành công
+    function hideSuccessMessage() {
+        var overlay = document.querySelector(".overlay");
+        overlay.style.display = "none";
+    }
+
+    // Gắn sự kiện cho nút Đồng ý và Hủy trong hộp thoại xác nhận
+    document.getElementById("cancelButton").addEventListener("click", closeConfirmationBox);
+    document.getElementById("confirmButton").addEventListener("click", handleOrderConfirmation);
+
+</script>
+{% endblock content_checkout %}
+

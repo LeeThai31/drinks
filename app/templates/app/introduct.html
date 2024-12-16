@@ -1,0 +1,30 @@
+{% extends 'app/base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bán đồ uống - Giới thiệu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    {% block register%}
+    <header>
+        <h1><center>Chào mừng đến với trang web bán đồ uống</center></h1>
+    </header>
+    <section class="introduction">
+        <div class="intro-text">
+            <h2><center>Về chúng tôi</center></h2>
+            <p>Chúng tôi là đội ngũ đam mê đồ uống, mang đến cho bạn những trải nghiệm thưởng thức tuyệt vời nhất từ những ly nước ép tươi ngon lành đến những tách cà phê thơm ngon hay các loại trà trái cây mát lạnh. Với sứ mệnh làm hài lòng từng khách hàng, chúng tôi cam kết cung cấp sản phẩm chất lượng, an toàn và đa dạng, để bạn có thể thưởng thức những giây phút thư giãn thật tuyệt vời cùng bạn bè và gia đình.
+
+                Hãy cùng khám phá và chọn lựa những sản phẩm yêu thích của bạn tại đây, nơi mang đến cho bạn niềm đam mê và sự hài lòng từ mỗi giọt thức uống.</p>
+        </div>
+        <div class="intro-image"><center>
+            <img src="{%static 'app/images/banner/sumer.jpg' %}" alt="Đồ uống">
+        </center>
+        </div>
+    </section>
+    <!-- Các phần còn lại của trang web -->
+    {% endblock register%}
+</body>
+</html>

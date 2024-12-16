@@ -1,0 +1,25 @@
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    top:-60px;
+    font-size: 20px; /* Đổi giá trị font-size tại đây */
+    font-weight: bold;
+}
+.call-btn {
+    display: inline-block;
+    justify-content: center;
+    border: 2px solid red;
+    padding: 10px 20px;
+    color: red;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color:white;
+}
+.call-btn:hover {
+    background-color: red;
+    color: white;
+}
+.lh:hover{
+    color: red;
+    }
